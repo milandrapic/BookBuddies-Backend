@@ -1,0 +1,74 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+   
+spring:
+  application:
+    name: Book Buddies Application
+    admin.enabled: false 
+  profiles:
+    active: 
+  main:
+    banner-mode: off
+#    log-startup-info: false
+#    allow-bean-definition-overriding: true
+    
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB
+      location: ${TMP:/tmp}
+
+# ===============================
+# DATA SOURCE
+# ===============================
+# mysql -u root -p
+# CREATE DATABASE IF NOT EXISTS book_buddies;
+# CREATE USER 'book_buddies'@'%' IDENTIFIED BY 'password';
+# GRANT ALL PRIVILEGES ON book_buddies.* TO 'book_buddies'@'%';
+# FLUSH PRIVILEGES; 
+# ===============================
+  datasource:
+    url: jdbc:mysql://localhost:3306/book_buddies?useSSL=false&serverTimezone=America/Toronto
+    username: book_buddies
+    password: ${book_buddies.password:password}
+
+
+# ===============================
+# DATA/ REST/ JPA / HIBERNATE
+# ===============================
+  data:
+    rest:
+      base-path: /api
+    jpa:
+      repositories:
+        enabled: true
+        bootstrap-mode: default
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:        
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl  
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL57InnoDBDialect
+        jdbc.batch_size: 25   
+        order_inserts: true
+        order_updates: true     
+
+# ===============================
+# LOGING
+# ===============================        
+logging: 
+  level: 
+    root: info
+    com.drapic: debug
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE 
+        
